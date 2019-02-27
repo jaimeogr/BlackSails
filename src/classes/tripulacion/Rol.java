@@ -1,9 +1,6 @@
 package classes.tripulacion;
 
-import classes.Embarcacion;
-import classes.armamento.Armamento;
-
-import java.util.LinkedList;
+import classes.entidadesMarinas.Embarcacion;
 
 public abstract class Rol {
 

@@ -1,6 +1,6 @@
 package classes.tripulacion;
 
-import classes.Embarcacion;
+import classes.entidadesMarinas.Embarcacion;
 
 public class Capitan extends Rol {
 

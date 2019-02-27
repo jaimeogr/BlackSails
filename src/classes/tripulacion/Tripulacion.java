@@ -1,6 +1,6 @@
 package classes.tripulacion;
 
-import classes.Embarcacion;
+import classes.entidadesMarinas.Embarcacion;
 
 import java.util.Collections;
 import java.util.Comparator;

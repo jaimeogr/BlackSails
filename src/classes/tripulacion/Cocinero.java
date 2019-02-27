@@ -1,7 +1,6 @@
 package classes.tripulacion;
 
-import classes.Embarcacion;
-import classes.armamento.Armamento;
+import classes.entidadesMarinas.Embarcacion;
 import classes.armamento.Cuchillo;
 
 import java.util.LinkedList;
