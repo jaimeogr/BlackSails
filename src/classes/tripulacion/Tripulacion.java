@@ -2,11 +2,8 @@ package classes.tripulacion;
 
 import classes.entidadesMarinas.Embarcacion;
 import classes.exceptions.IncorrectRoleException;
-import com.sun.xml.internal.bind.v2.schemagen.episode.SchemaBindings;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Tripulacion {
 
@@ -56,14 +53,52 @@ public class Tripulacion {
         }
     }
 
-    public void ganarUnaBatallaClasica() {
+    public List<Tripulante> ganarUnaBatallaClasica(Embarcacion embPropia) {
         aumentarCorajeBase(new Double(5));
+        ArrayList<Tripulante> tripulantesQueSeCambianDeTripulacion = new ArrayList<Tripulante>();
+        for (int i = 0; i < 3; i++) {
+            Tripulante tripulanteQueCambiaDeTripulacion =
+                    getTripulanteMasCorajudoIgnorandoCapitanYContramaestre(embPropia);
+            tripulantesQueSeCambianDeTripulacion.add(tripulanteQueCambiaDeTripulacion);
+            removerCocineroOPirata(tripulanteQueCambiaDeTripulacion);
+        }
+        tripulantesQueSeCambianDeTripulacion.add(reemplazarAlContramaestreConElMasCorajudo(embPropia));
+        return tripulantesQueSeCambianDeTripulacion;
     }
 
-    public void perderUnaBatallaClasica(Embarcacion emb) {
-        for(int i=0; i<3; i++){
-            eliminarAlTripulanteMenosCorajudo(emb);
+    public void perderUnaBatallaClasica(Embarcacion embPropia, List<Tripulante> tripulantesVencedores) {
+        //TODO: ¿podria haber hecho que el metodo ganarunabatalla retorne un tripulante que podria ser el parametro
+        // del nuevo capitan para la embarcacion que perdio?
+        // eso seria mejor que la implementacion actual?
+        for (int i = 0; i < 3; i++) {
+            eliminarAlTripulanteMenosCorajudo(embPropia);
         }
+        for (Tripulante t : tripulantesVencedores) {
+            if (t.getClass().getName().equals("Contramaestre")) {
+                t.cambiarTipo(new Capitan());
+                this.capitan = t;
+            } else if (t.getClass().getName().equals("Cocinero")) {
+                try {
+                    agregarCocinero(t);
+                } catch (IncorrectRoleException e) {
+                    System.out.println("el tripulante nuevo no corresponde al rol de cocinero");
+                }
+            } else if (t.getClass().getName().equals("Pirata")) {
+                try {
+                    agregarPirata(t);
+                } catch (IncorrectRoleException e) {
+                    System.out.println("el tripulante nuevo no corresponde al rol de pirata");
+                }
+            }
+        }
+    }
+
+
+    private void removerCocineroOPirata(Tripulante tripulante) {
+        if (tripulante.getClass().getName().equals("Cocinero"))
+            cocineros.remove(tripulante);
+        else
+            piratas.remove(tripulante);
     }
 
     private void aumentarCorajeBase(Double valorEnQueSeIncrementara) {
@@ -78,12 +113,12 @@ public class Tripulacion {
                 Collections.max(piratas, Comparator.comparing(p -> p.getCorajeTotal(emb)));
         Tripulante auxiliarMenosCorajudo =
                 obtenerTripulanteMenosCorajudoDeDos(posibleMenosCorajudo1, posibleMenosCorajudo2, emb);
-    // por ahora voy a suponer que el menos corajudo es siempre un cocinero o pirata
-    //    auxiliarMenosCorajudo = obtenerTripulanteMenosCorajudoDeDos(auxiliarMenosCorajudo,contramaestre, emb);
+        // por ahora voy a suponer que el menos corajudo es siempre un cocinero o pirata
+        //    auxiliarMenosCorajudo = obtenerTripulanteMenosCorajudoDeDos(auxiliarMenosCorajudo,contramaestre, emb);
         //   auxiliarMenosCorajudo = obtenerTripulanteMenosCorajudoDeDos(auxiliarMenosCorajudo,capitan, emb);
-        if(auxiliarMenosCorajudo.obtenerNombreDelRol().equals("Cocinero"))
+        if (auxiliarMenosCorajudo.obtenerNombreDelRol().equals("Cocinero"))
             cocineros.remove(auxiliarMenosCorajudo);
-        if(auxiliarMenosCorajudo.obtenerNombreDelRol().equals("Pirata"))
+        if (auxiliarMenosCorajudo.obtenerNombreDelRol().equals("Pirata"))
             piratas.remove(auxiliarMenosCorajudo);
     }
 
@@ -107,5 +142,13 @@ public class Tripulacion {
             throw new IncorrectRoleException("El Tripulante que se intento agregar como cocinero a la" +
                     " tripulacion no coincide con el rol ´Pirata´ ");
         }
+    }
+
+    public Tripulante reemplazarAlContramaestreConElMasCorajudo(Embarcacion emb) {
+        Tripulante contramaestreViejo = contramaestre;
+        Tripulante contramaestreNuevo = getTripulanteMasCorajudoIgnorandoCapitanYContramaestre(emb);
+        contramaestreNuevo.cambiarTipo(new Contramaestre());
+        this.contramaestre = contramaestreNuevo;
+        return contramaestreViejo;
     }
 }

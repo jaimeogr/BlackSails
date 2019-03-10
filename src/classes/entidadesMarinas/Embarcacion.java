@@ -4,7 +4,9 @@ import classes.armamento.Canion;
 import classes.tripulacion.Tripulacion;
 import classes.tripulacion.Tripulante;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Embarcacion extends EntidadMarina {
     private int monedasDeOro;
@@ -33,4 +35,15 @@ public class Embarcacion extends EntidadMarina {
         return tripulacion.getTripulanteMasCorajudoIgnorandoCapitanYContramaestre(this);
     }
 
+    public Tripulante reemplazarAlContramaestreConElMasCorajudo() {
+        return tripulacion.reemplazarAlContramaestreConElMasCorajudo(this);
+    }
+
+    public List<Tripulante> ganarClasicaBatalla() {
+        return tripulacion.ganarUnaBatallaClasica(this);
+    }
+
+    public void perderClasicaBatalla(List<Tripulante> tripulantesNuevos) {
+        tripulacion.perderUnaBatallaClasica(this, tripulantesNuevos);
+    }
 }

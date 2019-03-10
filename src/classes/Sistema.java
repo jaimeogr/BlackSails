@@ -1,8 +1,10 @@
 package classes;
 
 import classes.entidadesMarinas.Embarcacion;
+import classes.tripulacion.Tripulante;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sistema {
     private static Sistema ourInstance = new Sistema();
@@ -23,8 +25,15 @@ public class Sistema {
 
     }
 
-    public void clasicaBatalla (){
-
+    public void clasicaBatalla (Embarcacion emb1, Embarcacion emb2){
+        Embarcacion embGanadora = emb1;
+        Embarcacion embPerdedora = emb2;
+        if(emb1.getPoderDeDanioCanionesMasCorajes() < emb2.getPoderDeDanioCanionesMasCorajes()){
+            embGanadora = emb2;
+            embPerdedora = emb1;
+        }
+        List<Tripulante> tripulantesNuevos = embGanadora.ganarClasicaBatalla();
+        embPerdedora.perderClasicaBatalla(tripulantesNuevos);
 
     }
 
