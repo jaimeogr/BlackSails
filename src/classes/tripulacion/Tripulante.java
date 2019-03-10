@@ -24,4 +24,8 @@ public class Tripulante {
     public Integer getInteligencia() {
         return inteligencia;
     }
+
+    public String obtenerNombreDelRol(){
+        return tipo.getClass().getName();
+    }
 }

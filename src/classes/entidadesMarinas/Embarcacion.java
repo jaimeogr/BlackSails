@@ -7,7 +7,6 @@ import classes.tripulacion.Tripulante;
 import java.util.LinkedList;
 
 public class Embarcacion extends EntidadMarina {
-    private static double distanciaProblematica = 3;
     private int monedasDeOro;
     private Tripulacion tripulacion;
     private LinkedList<Canion> caniones = new LinkedList<Canion>();
@@ -34,15 +33,4 @@ public class Embarcacion extends EntidadMarina {
         return tripulacion.getTripulanteMasCorajudoIgnorandoCapitanYContramaestre(this);
     }
 
-    public boolean puedeHaberConflictoEntreEmbarcaciones(Embarcacion embarcacionAjena) {
-        boolean resultado = true;
-        if (!oceano.equals(embarcacionAjena.getOceano())) { //si los oceanos son diferentes, ya retorna false
-            resultado = false;
-        } else {
-            Double distanciaActual = ejesCartesianos.distance(embarcacionAjena.getEjesCartesianos());
-            if (distanciaActual > distanciaProblematica)
-                resultado = false;
-        }
-        return resultado;
-    }
 }
