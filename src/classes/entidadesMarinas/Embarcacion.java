@@ -12,7 +12,8 @@ public class Embarcacion extends EntidadMarina {
     private Tripulacion tripulacion;
     private LinkedList<Canion> caniones = new LinkedList<Canion>();
 
-    public Embarcacion(int monedasDeOro, Tripulacion tripulacion) {
+    public Embarcacion(int monedasDeOro, Tripulacion tripulacion, Double x, Double y, String oceano) {
+        super(x, y, oceano);
         this.monedasDeOro = monedasDeOro;
         this.tripulacion = tripulacion;
     }
@@ -35,26 +36,12 @@ public class Embarcacion extends EntidadMarina {
 
     public boolean puedeHaberConflictoEntreEmbarcaciones(Embarcacion embarcacionAjena) {
         boolean resultado = true;
-
-        String[] coordenadasThis = this.getUbicacion().split(";");
-        String[] coordenadasAjenas = embarcacionAjena.getUbicacion().split(";");
-
-        String oceanoThis = coordenadasThis[1]; //obtengo los oceanos
-        String oceanoAjeno = coordenadasAjenas[1];
-
-        double xThis = Double.parseDouble(coordenadasThis[2]); //obtengo las coordenadas X
-        double xAjeno = Double.parseDouble(coordenadasAjenas[2]);
-
-        double yThis = Double.parseDouble(coordenadasAjenas[3]); //
-        double yAjeno = Double.parseDouble(coordenadasAjenas[3]);
-
-        if (oceanoAjeno.equals(oceanoThis)) { //si los oceanos son diferentes
-            double distancia = Math.hypot(xAjeno - xThis, yAjeno - yThis);
-            if (distancia > distanciaProblematica) { //si no esta lo suficientemente cerca entonces es false
-                resultado = false;
-            }
-        }else{
+        if (!oceano.equals(embarcacionAjena.getOceano())) { //si los oceanos son diferentes, ya retorna false
             resultado = false;
+        } else {
+            Double distanciaActual = ejesCartesianos.distance(embarcacionAjena.getEjesCartesianos());
+            if (distanciaActual > distanciaProblematica)
+                resultado = false;
         }
         return resultado;
     }

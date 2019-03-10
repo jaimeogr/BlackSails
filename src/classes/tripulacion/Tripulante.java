@@ -5,9 +5,12 @@ import classes.entidadesMarinas.Embarcacion;
 public class Tripulante {
     private double corajeBase;
     private Rol tipo;
+    private Integer inteligencia;
 
-    public Tripulante (double corajeBase, Rol tipo){
+    public Tripulante (double corajeBase, Rol tipo, Integer inteligencia){
         this.corajeBase = corajeBase;
+        this.inteligencia = inteligencia;
+        this.tipo = tipo;
     }
 
     public double getCorajeTotal(Embarcacion embarcacion) {
@@ -16,5 +19,9 @@ public class Tripulante {
 
     public void cambiarTipo (Rol tipo){
         this.tipo = tipo;
+    }
+
+    public Integer getInteligencia() {
+        return inteligencia;
     }
 }

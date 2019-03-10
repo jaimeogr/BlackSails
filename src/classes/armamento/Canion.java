@@ -15,4 +15,6 @@ public class Canion implements Armamento {
     public double getDanio() {
         return danio * Math.max(0,  (1 - anios/100));
     }
+
+    //TODO: desgastar segun el año y el daño recibido (verificar esto, creo q es cuando lo ataca una ballena)
 }
